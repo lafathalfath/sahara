@@ -1,10 +1,12 @@
 const express = require('express')
-const NationController = require('../controller/nationController')
+const nationController = require('../controller/nationController')
 
 const router = express.Router()
 
-router.get('/', NationController.getAllNation)
-router.get('/:id', NationController.getNationById)
-router.post('/', NationController.storeNation)
-router.put('/:id', NationController.updateNation)
-router.delete('/:id', NationController.destroyNationById)
+router.get('/', nationController.getAllNation)
+router.get('/:id', nationController.getNationById)
+router.post('/', nationController.storeNation)
+router.put('/:id', nationController.updateNation)
+router.delete('/:id', nationController.destroyNationById)
+
+module.exports = router

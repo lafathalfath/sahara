@@ -18,7 +18,7 @@ app.get('/', (req, res)=>{
 })
 
 
-mongoose.connect('mongodb+srv://iqnaraidan12:o9GSabSOE6V9Ocgl@cluster0.rvlbkqu.mongodb.net/nation?retryWrites=true&w=majority')
+mongoose.connect(process.env.DB_HOST)
 .then(()=>{
     console.log('Connected to database')
     app.listen(port, ()=>console.log(`Server running on: http://localhost:${port}`))

@@ -10,6 +10,8 @@ const errorMiddleware = require('./middleware/errorMiddleWare')
 const cors = require('cors')
 
 const nationRoute = require('./routes/nationRoute')
+const usersRoute = require('./routes/usersRoute')
+// const authenticateToken = require('./middleware/authenticateToken')
 //end imports
 
 const corsOptions = {
@@ -25,11 +27,12 @@ app.use(cors(corsOptions))
 //end
 
 //routes
-app.use('/api/nation', nationRoute)
-
 app.get('/', (req, res)=>{
     res.send('hello user!')
 })
+
+app.use('/api/nation', nationRoute)
+app.use('/api/users', usersRoute)
 //end routes
 
 app.use(errorMiddleware)

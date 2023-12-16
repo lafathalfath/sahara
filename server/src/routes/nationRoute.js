@@ -6,6 +6,7 @@ const {
     updateNation,
     destroyNationById
 } = require('../controller/nationController')
+// const authenticateToken = require('../middleware/authenticateToken')
 
 const router = express.Router()
 

@@ -14,4 +14,4 @@ const nationSchema = mongoose.Schema(
 
 const Nation = mongoose.model('Nation', nationSchema)
 
-module.exports = Nation
+module.exports = Nation 

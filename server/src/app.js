@@ -9,8 +9,10 @@ const bodyParser = require('body-parser')
 const errorMiddleware = require('./middleware/errorMiddleWare')
 const cors = require('cors')
 
-const nationRoute = require('./routes/nationRoute')
 const usersRoute = require('./routes/usersRoute')
+const cityRoute = require('./routes/cityRoute')
+const provinceRoute = require('./routes/provinceRoute')
+const nationRoute = require('./routes/nationRoute')
 // const authenticateToken = require('./middleware/authenticateToken')
 //end imports
 
@@ -31,8 +33,10 @@ app.get('/', (req, res)=>{
     res.send('hello user!')
 })
 
-app.use('/api/nation', nationRoute)
 app.use('/api/users', usersRoute)
+app.use('/api/city', cityRoute)
+app.use('/api/province', provinceRoute)
+app.use('/api/nation', nationRoute)
 //end routes
 
 app.use(errorMiddleware)

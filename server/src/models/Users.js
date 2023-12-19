@@ -22,10 +22,10 @@ const usersSchema = mongoose.Schema(
             type: Boolean,
             required: [true, 'please enter your gender']
         },
-        nation: {
+        city: {
             type: mongoose.Types.ObjectId,
             required: [true, 'please enter nation'],
-            ref: "nations"
+            ref: "cities"
         },
         phone: {
             type: String,

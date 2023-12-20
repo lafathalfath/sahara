@@ -1,32 +1,32 @@
-const asyncHandler = require("express-async-handler");
-const Ratings = require("../models/Ratings");
-const Product = require("../models/Product");
-const Users = require("../models/Users");
+const asyncHandler = require('express-async-handler')
+const Favorites = require('../models/Favorites')
+const Users = require('../models/Users')
+const Product = require('../models/Product')
 
-
-const getAllRatings = asyncHandler(async(req, res)=>{
+const getAllFavorites = asyncHandler(async(req, res)=>{
     try {
-        const rating = await Ratings.find({})
-        res.status(200).json({payload: rating})
+        const favovrite = await Favorites.find({})
+        res.status(200).json({payload: favovrite})
     } catch (error) {
         res.status(500)
         throw new Error(error.message)
     }
 })
-const getRatingById = asyncHandler(async(req, res)=>{
+const getFavoriteById = asyncHandler(async(req, res)=>{
     try {
         const {id} = req.params
-        const rating = await Ratings.findById(id)
-        if (!rating) {
+        const favorite = await Favorites.findById(id)
+        if (!favorite) {
             res.status(404)
-            throw new Error(`cannot find any ratings with id: ${id}`)
+            throw new Error(`cannot find any favorites product with id: ${id}`)
         }
+        res.status(200).json({payload: favorite})
     } catch (error) {
         res.status(500)
         throw new Error(error.message)
     }
 })
-const storeRating = asyncHandler(async(req, res)=>{
+const storeFavorite = asyncHandler(async(req, res)=>{
     try {
         try {
             const user = await Users.findOne({username: req.body.user})
@@ -37,24 +37,19 @@ const storeRating = asyncHandler(async(req, res)=>{
         }
         try {
             const product = await Product.findOne({product_name: req.body.product})
-            req.body.product = product.id
+            req.body.product = product
         } catch (error) {
             res.status(404)
             throw new Error(`cannot find any products with name: ${req.body.product}`)
         }
-        const rating = await Ratings.create(req.body)
-        res.status(200).json({payload: rating})
+        const favorite = await Favorites.create(req.body)
+        res.status(200).json({payload: favorite})
     } catch (error) {
-        // console.log(error.code)
-        if (error.code === 11000 && error.keyPattern && error.keyPattern.product === 1) {
-            res.status(400)
-            throw new Error(`item already exist`)
-        }
         res.status(500)
         throw new Error(error.message)
     }
 })
-const updateRating = asyncHandler(async(req, res)=>{
+const updateFavorite = asyncHandler(async(req, res)=>{
     try {
         try {
             const user = await Users.findOne({username: req.body.user})
@@ -65,37 +60,37 @@ const updateRating = asyncHandler(async(req, res)=>{
         }
         try {
             const product = await Product.findOne({product_name: req.body.product})
-            req.body.product = product.id
+            req.body.product = product
         } catch (error) {
             res.status(404)
             throw new Error(`cannot find any products with name: ${req.body.product}`)
         }
         const {id} = req.params
-        const rating = await Ratings.findByIdAndUpdate(id, req.body)
-        if(!rating){
+        const favorite = await Favorites.findByIdAndUpdate(id, req.body)
+        if (!favorite) {
             res.status(404)
-            throw new Error(`cannot find any ratings with id: ${id}`)
+            throw new Error(`cannot find any favorite items with id: ${id}`)
         }
-        const updatedRating = await Ratings.findById(id)
-        res.status(200).json({payload: updatedRating, message: `item updated ${id}`})
+        const updatedFavorite = await Favorites.findById(id)
+        res.status(200).json({payload: updatedFavorite, message: 'item updated'})
     } catch (error) {
         res.status(500)
         throw new Error(error.message)
     }
 })
-const deleteRatingById = asyncHandler(async(req, res)=>{
+const deleteFavoriteById = asyncHandler(async(req, res)=>{
     try {
         const {id} = req.params
-        const rating = await Ratings.findByIdAndDelete(id)
-        if (!rating) {
+        const favorite = await Favorites.findByIdAndDelete(id)
+        if(!favorite){
             res.status(404)
-            throw new Error(`cannot find any ratings with id: ${id}`)
+            throw new Error(`cannot find any favorite items with id: ${id}`)
         }
-        res.status(200).json({message: `item deleted id: ${id}`})
+        res.status(200).json({message: 'item deleted'})
     } catch (error) {
         res.status(500)
         throw new Error(error.message)
     }
 })
 
-module.exports = {getAllRatings, getRatingById, storeRating, updateRating, deleteRatingById}
+module.exports = {getAllFavorites, getFavoriteById, storeFavorite, updateFavorite, deleteFavoriteById}

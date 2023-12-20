@@ -17,6 +17,9 @@ const categoryRoute = require('./routes/categoryRoute')
 const stylesRoute = require('./routes/stylesRoute')
 const productRoute = require('./routes/productRoute')
 const ratingsRoute = require('./routes/ratingsRoute')
+const favoritesRoute = require('./routes/favoritesRoute')
+const cartRoute = require('./routes/cartRoute')
+const transactionRoute = require('./routes/transactionRoute')
 // const authenticateToken = require('./middleware/authenticateToken')
 //end imports
 
@@ -45,6 +48,9 @@ app.use('/api/category', categoryRoute)
 app.use('/api/style', stylesRoute)
 app.use('/api/product', productRoute)
 app.use('/api/rating', ratingsRoute)
+app.use('/api/favorite', favoritesRoute)
+app.use('/api/cart', cartRoute)
+app.use('/api/transaction', transactionRoute)
 //end routes
 
 //middleware

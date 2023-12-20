@@ -15,6 +15,7 @@ const provinceRoute = require('./routes/provinceRoute')
 const nationRoute = require('./routes/nationRoute')
 const categoryRoute = require('./routes/categoryRoute')
 const stylesRoute = require('./routes/stylesRoute')
+const productRoute = require('./routes/productRoute')
 // const authenticateToken = require('./middleware/authenticateToken')
 //end imports
 
@@ -41,6 +42,7 @@ app.use('/api/province', provinceRoute)
 app.use('/api/nation', nationRoute)
 app.use('/api/category', categoryRoute)
 app.use('/api/style', stylesRoute)
+app.use('/api/ ', productRoute)
 //end routes
 
 app.use(errorMiddleware)

@@ -45,7 +45,6 @@ const storeProduct = asyncHandler(async(req, res)=>{
                 }
                 style.push(s[0].id)
             }
-            console.log(style)
             req.body.style = style
         } catch (error) {
             res.status(404)
@@ -78,7 +77,6 @@ const updateProduct = asyncHandler(async(req, res)=>{
                 }
                 style.push(s[0].id)
             }
-            console.log(style)
             req.body.style = style
         } catch (error) {
             res.status(404)

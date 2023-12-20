@@ -16,6 +16,7 @@ const nationRoute = require('./routes/nationRoute')
 const categoryRoute = require('./routes/categoryRoute')
 const stylesRoute = require('./routes/stylesRoute')
 const productRoute = require('./routes/productRoute')
+const ratingsRoute = require('./routes/ratingsRoute')
 // const authenticateToken = require('./middleware/authenticateToken')
 //end imports
 
@@ -43,9 +44,12 @@ app.use('/api/nation', nationRoute)
 app.use('/api/category', categoryRoute)
 app.use('/api/style', stylesRoute)
 app.use('/api/product', productRoute)
+app.use('/api/rating', ratingsRoute)
 //end routes
 
+//middleware
 app.use(errorMiddleware)
+//end middleware
 
 //connection
 mongoose.connect(process.env.DB_HOST)

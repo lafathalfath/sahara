@@ -42,7 +42,7 @@ app.use('/api/province', provinceRoute)
 app.use('/api/nation', nationRoute)
 app.use('/api/category', categoryRoute)
 app.use('/api/style', stylesRoute)
-app.use('/api/ ', productRoute)
+app.use('/api/product', productRoute)
 //end routes
 
 app.use(errorMiddleware)

@@ -36,15 +36,16 @@ const storeProduct = asyncHandler(async(req, res)=>{
             throw new Error(`cannot find any category with name: ${req.body.category}`)
         }
         try {
-            let style = []
-            for(let i=0; i>req.body.style.length; i++){
+            var style = []
+            for(let i=0; i<req.body.style.length; i++){
                 const s = await Styles.find({design_style: req.body.style[i]})
                 if (!s) {
                     res.status(404)
                     throw new Error(`cannot find any styles with name: ${req.body.style}`)
                 }
-                style.push(s.id)
+                style.push(s[0].id)
             }
+            console.log(style)
             req.body.style = style
         } catch (error) {
             res.status(404)
@@ -52,6 +53,7 @@ const storeProduct = asyncHandler(async(req, res)=>{
         }
         const product = await Product.create(req.body)
         res.status(200).json({payload: product})
+        // res.status(200).json({payload: req.body.style})
     } catch (error) {
         res.status(500)
         throw new Error(error.message)
@@ -67,15 +69,16 @@ const updateProduct = asyncHandler(async(req, res)=>{
             throw new Error(`cannot find any category with name: ${req.body.category}`)
         }
         try {
-            let style = []
-            for(let i=0; i>req.body.style.length; i++){
+            var style = []
+            for(let i=0; i<req.body.style.length; i++){
                 const s = await Styles.find({design_style: req.body.style[i]})
                 if (!s) {
                     res.status(404)
                     throw new Error(`cannot find any styles with name: ${req.body.style}`)
                 }
-                style.push(s.id)
+                style.push(s[0].id)
             }
+            console.log(style)
             req.body.style = style
         } catch (error) {
             res.status(404)

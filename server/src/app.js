@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 const errorMiddleware = require('./middleware/errorMiddleWare')
 const cors = require('cors')
 
+const tokenHandlerRoute = require('./routes/tokenHandlerRoute')
 const usersRoute = require('./routes/usersRoute')
 const cityRoute = require('./routes/cityRoute')
 const provinceRoute = require('./routes/provinceRoute')
@@ -40,6 +41,7 @@ app.get('/', (req, res)=>{
     res.send('hello user!')
 })
 
+app.use('/api/token', tokenHandlerRoute)
 app.use('/api/users', usersRoute)
 app.use('/api/city', cityRoute)
 app.use('/api/province', provinceRoute)

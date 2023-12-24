@@ -1,29 +1,30 @@
 const jwt = require('jsonwebtoken')
 
-// const authenticateToken = (req, res, next)=>{
-//     const token = req.header('Authorization')
-//     if (!token) {
-//         return res.status(401).json({message: 'Access restricted. token is missing'})
-//     }
-//     const clearToken = token.replace('Bearer ', '')
-//     jwt.verify(clearToken, process.env.SECRET_ACCESS_TOKEN, (err, user)=>{
-//         if(err){
-//             console.error(err)
-//             return res.status(403).json({message: 'Invalid token'})
-//         }
-//         req.user = user
-//         next()
-//     })
-// }
+const authenticateToken=(req, res, next)=>{
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if(token==null) return res.sendStatus(401)
+    jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, user)=>{
+        if(err) return res.sendStatus(403)
+        req.user = user
+        next()
+    })
+}
 
-// const authenticateToken=(req, res, next)=>{
-//     const authHeader = req.headers['authorization']
-//     const token = authHeader && authHeader.split(' ')[1]
-//     if(token==null) return res.sendStatus(401)
-    
-//     jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, user)=>{
+const generateAccessToken = (user)=>{
+    const expireDelay = 60*60*1
+    return jwt.sign(user, process.env.SECRET_ACCESS_TOKEN, {expiresIn: `${expireDelay}s`})
+}
 
-//     })
-// }
+const tokenHandler = (req, res)=>{
+    const refreshToken = req.body.token
+    if(refreshToken == null) return res.sendStatus(401)
+    if(refreshToken.includes(refreshToken)) return res.sendStatus(403)
+    jwt.verify(refreshToken, process.env.SECRET_REFRESH_TOKEN, (err, user)=>{
+        if(err) return res.sendStatus(403)
+        const accessToken = generateAccessToken({name: user.name})
+        res.json({accessToken: accessToken})
+    })
+}
 
-module.exports = authenticateToken
+module.exports = {authenticateToken, generateAccessToken, tokenHandler} 

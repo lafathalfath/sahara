@@ -41,7 +41,8 @@ app.get('/', (req, res)=>{
     res.send('hello user!')
 })
 
-app.use('/api/token', tokenHandlerRoute)
+app.use('/auth', tokenHandlerRoute)
+// app.use('/api/token', tokenHandlerRoute)
 app.use('/api/users', usersRoute)
 app.use('/api/city', cityRoute)
 app.use('/api/province', provinceRoute)

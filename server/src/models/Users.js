@@ -4,6 +4,7 @@ const usersSchema = mongoose.Schema(
     {
         username: { type: String, required: [true, 'please enter username'] },
         email: { type: String, required: [true, 'please enter your email'] },
+        password: {type: String, required: [true, 'please enter your password']},
         // add password and hash
         firstName: { type: String, required: [true, 'please enter your first name'] },
         lastName: { type: String, required: [true, 'please enter your last name'] },

@@ -21,6 +21,7 @@ const ratingsRoute = require('./routes/ratingsRoute')
 const favoritesRoute = require('./routes/favoritesRoute')
 const cartRoute = require('./routes/cartRoute')
 const transactionRoute = require('./routes/transactionRoute')
+const { authenticateToken } = require('./middleware/authenticateToken')
 // const authenticateToken = require('./middleware/authenticateToken')
 //end imports
 
@@ -43,7 +44,7 @@ app.get('/', (req, res)=>{
 
 app.use('/auth', tokenHandlerRoute)
 // app.use('/api/token', tokenHandlerRoute)
-app.use('/api/users', usersRoute)
+app.use('/api/users', authenticateToken, usersRoute)
 app.use('/api/city', cityRoute)
 app.use('/api/province', provinceRoute)
 app.use('/api/nation', nationRoute)

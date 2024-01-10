@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const {tokenHandler, authenticateToken} = require('../middleware/authenticateToken')
+const {tokenHandler, loginHandler} = require('../middleware/authenticateToken')
 
 router.post('/token', tokenHandler),
-router.post('/login', authenticateToken)
+router.post('/login', loginHandler)
 
 module.exports = router

@@ -2,7 +2,7 @@ const City = require("../models/City");
 const Nation = require("../models/Nation");
 const Users = require("../models/Users");
 const asyncHandler = require("express-async-handler");
-
+const bcrypt = require('bcrypt')
 
 const getAllUsers = asyncHandler(async(req, res)=>{
     try {
@@ -39,6 +39,7 @@ const storeUser = asyncHandler(async(req, res)=>{
             res.status(500)
             throw new Error(error.message)
         }
+        await bcrypt.hash(req.body.password, 9).then(pwd=>req.body.password = pwd).catch(err=>console.error(err.message))
         const data = req.body
 
         // res.status(200).json({payload: data})

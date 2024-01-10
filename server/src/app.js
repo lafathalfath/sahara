@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 const errorMiddleware = require('./middleware/errorMiddleWare')
 const cors = require('cors')
 
-const tokenHandlerRoute = require('./routes/tokenHandlerRoute')
+const authenticationRoute = require('./routes/authenticationRoute')
 const usersRoute = require('./routes/usersRoute')
 const cityRoute = require('./routes/cityRoute')
 const provinceRoute = require('./routes/provinceRoute')
@@ -42,8 +42,7 @@ app.get('/', (req, res)=>{
     res.send('hello user!')
 })
 
-app.use('/auth', tokenHandlerRoute)
-// app.use('/api/token', tokenHandlerRoute)
+app.use('/auth', authenticationRoute)
 app.use('/api/users', authenticateToken, usersRoute)
 app.use('/api/city', cityRoute)
 app.use('/api/province', provinceRoute)
@@ -51,10 +50,10 @@ app.use('/api/nation', nationRoute)
 app.use('/api/category', categoryRoute)
 app.use('/api/style', stylesRoute)
 app.use('/api/product', productRoute)
-app.use('/api/rating', ratingsRoute)
-app.use('/api/favorite', favoritesRoute)
-app.use('/api/cart', cartRoute)
-app.use('/api/transaction', transactionRoute)
+app.use('/api/rating', authenticateToken, ratingsRoute)
+app.use('/api/favorite', authenticateToken, favoritesRoute)
+app.use('/api/cart', authenticateToken, cartRoute)
+app.use('/api/transaction', authenticateToken, transactionRoute)
 //end routes
 
 //middleware

@@ -5,7 +5,8 @@ const Product = require('../models/Product')
 
 const getAllFavorites = asyncHandler(async(req, res)=>{
     try {
-        const favovrite = await Favorites.find({})
+        const user = await Users.findOne({username: req.user.username})
+        const favovrite = await Favorites.find({user: user._id})
         res.status(200).json({payload: favovrite})
     } catch (error) {
         res.status(500)
@@ -15,7 +16,8 @@ const getAllFavorites = asyncHandler(async(req, res)=>{
 const getFavoriteById = asyncHandler(async(req, res)=>{
     try {
         const {id} = req.params
-        const favorite = await Favorites.findById(id)
+        const user = await Users.findOne({username: req.user.username})
+        const favorite = await Favorites.findOne({_id: id, user: user._id})
         if (!favorite) {
             res.status(404)
             throw new Error(`cannot find any favorites product with id: ${id}`)
@@ -29,14 +31,9 @@ const getFavoriteById = asyncHandler(async(req, res)=>{
 const storeFavorite = asyncHandler(async(req, res)=>{
     try {
         try {
-            const user = await Users.findOne({username: req.body.user})
-            req.body.user = user.id
-        } catch (error) {
-            res.status(404)
-            throw new Error(`cannot find any users with username: ${req.body.user}`)
-        }
-        try {
+            const user = await Users.findOne({username: req.user.username})
             const product = await Product.findOne({product_name: req.body.product})
+            req.body.user = user._id
             req.body.product = product
         } catch (error) {
             res.status(404)
@@ -49,39 +46,11 @@ const storeFavorite = asyncHandler(async(req, res)=>{
         throw new Error(error.message)
     }
 })
-const updateFavorite = asyncHandler(async(req, res)=>{
-    try {
-        try {
-            const user = await Users.findOne({username: req.body.user})
-            req.body.user = user.id
-        } catch (error) {
-            res.status(404)
-            throw new Error(`cannot find any users with username: ${req.body.user}`)
-        }
-        try {
-            const product = await Product.findOne({product_name: req.body.product})
-            req.body.product = product
-        } catch (error) {
-            res.status(404)
-            throw new Error(`cannot find any products with name: ${req.body.product}`)
-        }
-        const {id} = req.params
-        const favorite = await Favorites.findByIdAndUpdate(id, req.body)
-        if (!favorite) {
-            res.status(404)
-            throw new Error(`cannot find any favorite items with id: ${id}`)
-        }
-        const updatedFavorite = await Favorites.findById(id)
-        res.status(200).json({payload: updatedFavorite, message: 'item updated'})
-    } catch (error) {
-        res.status(500)
-        throw new Error(error.message)
-    }
-})
 const deleteFavoriteById = asyncHandler(async(req, res)=>{
     try {
         const {id} = req.params
-        const favorite = await Favorites.findByIdAndDelete(id)
+        const user = await Users.findOne({username: req.user.username})
+        const favorite = await Favorites.findOneAndDelete({_id: id, user: user._id})
         if(!favorite){
             res.status(404)
             throw new Error(`cannot find any favorite items with id: ${id}`)
@@ -93,4 +62,4 @@ const deleteFavoriteById = asyncHandler(async(req, res)=>{
     }
 })
 
-module.exports = {getAllFavorites, getFavoriteById, storeFavorite, updateFavorite, deleteFavoriteById}
+module.exports = {getAllFavorites, getFavoriteById, storeFavorite, deleteFavoriteById}

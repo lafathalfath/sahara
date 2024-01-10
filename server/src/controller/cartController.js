@@ -1,12 +1,14 @@
 const asyncHandler = require('express-async-handler')
 const Cart = require('../models/Cart')
 const Product = require('../models/Product')
-const { trace } = require('../routes/usersRoute')
+// const { trace } = require('../routes/usersRoute')
 const Users = require('../models/Users')
 
 const getAllCart = asyncHandler(async(req, res)=>{
     try {
-        const cart = await Cart.find({})
+        const user = await Users.findOne({username: req.user.username})
+        // console.log(user)
+        const cart = await Cart.find({user: user._id})
         res.status(200).json({payload: cart})
     } catch (error) {
         res.status(500)
@@ -16,7 +18,8 @@ const getAllCart = asyncHandler(async(req, res)=>{
 const getCartById = asyncHandler(async(req, res)=>{
     try {
         const {id} = req.params
-        const cart = await Cart.findById(id)
+        const user = await Users.findOne({username: req.user.username})
+        const cart = await Cart.findOne({_id: id, user: user._id})
         if (!cart) {
             res.status(404)
             throw new Error(`cannot find any items in cart with id: ${id}`)
@@ -30,15 +33,10 @@ const getCartById = asyncHandler(async(req, res)=>{
 const storeCart = asyncHandler(async(req, res)=>{
     try {
         try {
-            const user = await Users.findOne({username: req.body.user})
-            req.body.user = user.id
-        } catch (error) {
-            res.status(404)
-            throw new Error(error.message)
-        }
-        try {
+            const user = await Users.findOne({username: req.user.username})
             const product = await Product.findOne({product_name: req.body.product})
             req.body.product = product
+            req.body.user = user._id
         } catch (error) {
             res.status(404)
             throw new Error(error.message)
@@ -50,39 +48,11 @@ const storeCart = asyncHandler(async(req, res)=>{
         throw new Error(error.message)
     }
 })
-const updateCart = asyncHandler(async(req, res)=>{
-    try {
-        try {
-            const user = await Users.findOne({username: req.body.user})
-            req.body.user = user.id
-        } catch (error) {
-            res.status(404)
-            throw new Error(error.message)
-        }
-        try {
-            const product = await Product.findOne({product_name: req.body.product})
-            req.body.product = product
-        } catch (error) {
-            res.status(404)
-            throw new Error(error.message)
-        }
-        const {id} = req.params
-        const cart = await Cart.findByIdAndUpdate(id, req.body)
-        if(!cart){
-            res.status(404)
-            throw new Error(`cannot find any cart items with id: ${id}`)
-        }
-        const updatedCart = await Cart.findById(id)
-        res.status(200).json({payload: updatedCart, message: 'cart updated'})
-    } catch (error) {
-        res.status(500)
-        throw new Error(error.message)
-    }
-})
 const deleteCartById = asyncHandler(async(req, res)=>{
     try {
         const {id} = req.params
-        const cart = await Cart.findByIdAndDelete(id)
+        const user = await Users.findOne({username: req.user.username})
+        const cart = await Cart.findOneAndDelete({_id: id, user: user._id})
         if (!cart) {
             res.status(404)
             throw new Error(`cannot find any cart items with id: ${id}`)
@@ -94,4 +64,4 @@ const deleteCartById = asyncHandler(async(req, res)=>{
     }
 })
 
-module.exports = {getAllCart, getCartById, storeCart, updateCart, deleteCartById}
+module.exports = {getAllCart, getCartById, storeCart, deleteCartById}

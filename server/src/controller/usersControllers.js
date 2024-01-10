@@ -6,10 +6,11 @@ const bcrypt = require('bcrypt')
 
 const getAllUsers = asyncHandler(async(req, res)=>{
     try {
-        const users = await Users.find({})
+        const users = await Users.findOne({username: req.user.username})
         // let userPayload = users
         // userPayload[0].nation = {}
         res.status(200).json({payload: users})
+        console.log(req.user);
     } catch (error) {
         res.status(500)
         throw new Error(error.message)

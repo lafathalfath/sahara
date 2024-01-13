@@ -22,13 +22,14 @@ const favoritesRoute = require('./routes/favoritesRoute')
 const cartRoute = require('./routes/cartRoute')
 const transactionRoute = require('./routes/transactionRoute')
 const { authenticateToken } = require('./middleware/authenticateToken')
-// const authenticateToken = require('./middleware/authenticateToken')
 //end imports
 
+// cors handler
 const corsOptions = {
     origin: process.env.FRONT_END,
     optionSuccessStatus: 200
 }
+// end cors handler
 
 //use method on libraries
 app.use(express.json())

@@ -42,7 +42,7 @@ const loginHandler = asyncHandler(async(req, res)=>{
     .catch(err=>console.error(err.message))
 })
 
-const logoutHandler=()=>{
+const logoutHandler=(req, res)=>{
     refreshTokens = refreshTokens.filter(token => token !== req.body.token)
     res.sendStatus(204)
 }

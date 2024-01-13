@@ -2,7 +2,10 @@ const City = require("../models/City");
 const Nation = require("../models/Nation");
 const Users = require("../models/Users");
 const asyncHandler = require("express-async-handler");
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const Favorites = require("../models/Favorites");
+const Cart = require("../models/Cart");
+const Transaction = require("../models/Transaction");
 
 const getAllUsers = asyncHandler(async(req, res)=>{
     try {
@@ -76,6 +79,9 @@ const updateUser = asyncHandler(async(req, res)=>{
 const deleteUserById = asyncHandler(async(req, res)=>{
     try {
         const {id} = req.params
+        await Favorites.deleteMany({user: id})
+        await Cart.deleteMany({user: id})
+        await Transaction.deleteMany({user: id})
         const user = await Users.findByIdAndDelete(id)
         if(!user){
             res.status(404)

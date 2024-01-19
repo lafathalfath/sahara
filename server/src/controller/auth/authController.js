@@ -19,7 +19,8 @@ const tokenHandler = (req, res)=>{
     jwt.verify(refreshToken, process.env.SECRET_REFRESH_TOKEN, (err, user)=>{
         if(err) return res.sendStatus(403)
         const accessToken = generateAccessToken({name: user.name})
-        res.json({accessToken: accessToken})
+        console.log(refreshTokens)
+        res.status(200).json({accessToken: accessToken})
     })
 }
 const loginHandler = asyncHandler(async(req, res)=>{
@@ -35,15 +36,17 @@ const loginHandler = asyncHandler(async(req, res)=>{
             const accessToken = generateAccessToken(user)
             const refreshToken = jwt.sign(user, process.env.SECRET_REFRESH_TOKEN)
             refreshTokens.push(refreshToken)
-            res.json({accessToken: accessToken, refreshToken: refreshToken}, 200)
+            console.log(refreshTokens)
+            res.status(200).json({accessToken: accessToken, refreshToken: refreshToken})
         }
-        res.json({message:'password is wrong'}, 403)
+        res.status(403).json({message:'password is wrong'})
     })
     .catch(err=>console.error(err.message))
 })
 
 const logoutHandler=(req, res)=>{
     refreshTokens = refreshTokens.filter(token => token !== req.body.token)
+    console.log(refreshTokens)
     res.sendStatus(204)
 }
 

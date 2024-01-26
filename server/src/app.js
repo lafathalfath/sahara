@@ -22,6 +22,9 @@ const favoritesRoute = require('./routes/favoritesRoute')
 const cartRoute = require('./routes/cartRoute')
 const transactionRoute = require('./routes/transactionRoute')
 const { authenticateToken } = require('./middleware/authenticateToken')
+const multer = require('multer')
+const fs = require('fs-extra')
+// const a = require('node:fs')
 //end imports
 
 // cors handler
@@ -37,6 +40,7 @@ app.use(bodyParser.json())
 app.use(express.urlencoded({extended: false}))
 app.use(cors(corsOptions))
 //end
+
 
 //routes
 app.get('/', (req, res)=>{
@@ -55,6 +59,31 @@ app.use('/api/rating', authenticateToken, ratingsRoute)
 app.use('/api/favorite', authenticateToken, favoritesRoute)
 app.use('/api/cart', authenticateToken, cartRoute)
 app.use('/api/transaction', authenticateToken, transactionRoute)
+
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb)=>{
+//         const path = `./src/storage/products/${req.body.product_name}/${file.fieldname}`
+//         fs.mkdirsSync(path)
+//         cb(null, path)
+//     },
+//     filename: (req, file, cb)=>{
+//         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`
+//         cb(null, `${uniqueSuffix}${file.originalname.substr(-4)}`)
+//     }
+// })
+
+// const upload = multer({ storage: storage })
+// const fUpload = upload.fields([
+//     {name: 'photo_product', maxCount: 100},
+//     {name: 'file_psd', maxCount: 1},
+//     {name: 'mockup', maxCount: 100}
+// ])
+// app.post('/api/upload', fUpload, (req, res, next)=>{
+//     let filePath = []
+//     req.files.photo_product.map(item=>filePath.push(item.path))
+//     res.json({message: 'sukses', file: filePath})
+// })
+
 //end routes
 
 //middleware

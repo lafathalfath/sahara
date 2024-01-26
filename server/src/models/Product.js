@@ -9,7 +9,7 @@ const productSchema = mongoose.Schema(
         category: {type: mongoose.Types.ObjectId, required: [true, 'please enter category'], ref: 'categories'}, // forreign
         price: {type: Number, required: [true, 'please enter price of product']},
         file_psd:  {type: String, required: [true, 'please enter the file path (psd)']}, // hash file name
-        mockup: {type: String, required: [true, 'please enter the file path (mockup)']},
+        mockup: {type: Array, required: [true, 'please enter the file path (mockup)']},
         style: {type: Array, required: [true, 'please enter some styles'], ref: 'styles'} // foreign
     },
     {

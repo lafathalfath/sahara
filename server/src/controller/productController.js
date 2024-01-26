@@ -13,6 +13,7 @@ const getAllProducts = asyncHandler(async(req, res)=>{
     }
 })
 const getProductById = asyncHandler(async(req, res)=>{
+    console.log(req.files)
     try {
         const {id} = req.params
         const product = await Product.findById(id)
@@ -50,9 +51,21 @@ const storeProduct = asyncHandler(async(req, res)=>{
             res.status(404)
             throw new Error(`cannot find any styles with name: ${req.body.style}`)
         }
+        let imagePaths = []
+        let psdPaths = []
+        let mockupPaths = []
+        req.files.photo_product.map(item=>imagePaths.push(item.path))
+        req.files.file_psd.map(item=>psdPaths.push(item.path))
+        req.files.mockup.map(item=>mockupPaths.push(item.path))
+
+        req.body.photo_product = imagePaths
+        req.body.file_psd = psdPaths
+        req.body.mockup = mockupPaths
+
         const product = await Product.create(req.body)
         res.status(200).json({payload: product})
-        // res.status(200).json({payload: req.body.style})
+
+        // res.json({payload: req.files})
     } catch (error) {
         res.status(500)
         throw new Error(error.message)

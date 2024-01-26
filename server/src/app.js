@@ -60,6 +60,8 @@ app.use('/api/favorite', authenticateToken, favoritesRoute)
 app.use('/api/cart', authenticateToken, cartRoute)
 app.use('/api/transaction', authenticateToken, transactionRoute)
 
+app.use('/static', express.static('./'))
+
 // const storage = multer.diskStorage({
 //     destination: (req, file, cb)=>{
 //         const path = `./src/storage/products/${req.body.product_name}/${file.fieldname}`

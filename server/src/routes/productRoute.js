@@ -1,6 +1,7 @@
 const express = require('express')
 const multer = require('multer')
-const path = require('path')
+const fs = require('fs-extra')
+// const path = require('path')
 const router = express.Router()
 const {getAllProducts, getProductById, storeProduct, updateProduct, deleteProductById} = require('../controller/productController')
 

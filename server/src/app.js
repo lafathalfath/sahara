@@ -22,9 +22,9 @@ const favoritesRoute = require('./routes/favoritesRoute')
 const cartRoute = require('./routes/cartRoute')
 const transactionRoute = require('./routes/transactionRoute')
 const { authenticateToken } = require('./middleware/authenticateToken')
-const multer = require('multer')
-const fs = require('fs-extra')
-// const a = require('node:fs')
+// const multer = require('multer')
+// const fs = require('fs-extra')
+
 //end imports
 
 // cors handler

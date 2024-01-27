@@ -52,17 +52,20 @@ const storeProduct = asyncHandler(async(req, res)=>{
             throw new Error(`cannot find any styles with name: ${req.body.style}`)
         }
         let imagePaths = []
-        let psdPaths = []
         let mockupPaths = []
         req.files.photo_product.map(item=>imagePaths.push(item.path))
-        req.files.file_psd.map(item=>psdPaths.push(item.path))
         req.files.mockup.map(item=>mockupPaths.push(item.path))
 
-        req.body.photo_product = imagePaths
-        req.body.file_psd = psdPaths
-        req.body.mockup = mockupPaths
+        // req.body.photo_product = imagePaths
+        // req.body.file_psd = req.files.file_psd
+        // req.body.mockup = mockupPaths
 
-        const product = await Product.create(req.body)
+        const product = await Product.create({
+            ...req.body, 
+            photo_product: imagePaths, 
+            file_psd: req.files.file_psd.path, 
+            mockup: mockupPaths
+        })
         res.status(200).json({payload: product})
 
         // res.json({payload: req.files})
@@ -108,6 +111,8 @@ const updateProduct = asyncHandler(async(req, res)=>{
         throw new Error(error.message)
     }
 })
+
+// nanti buat fungsi delete storage
 const deleteProductById = asyncHandler(async(req, res)=>{
     try {
         const {id} = req.params

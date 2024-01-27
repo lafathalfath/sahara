@@ -9,7 +9,7 @@ const {getAllProducts, getProductById, storeProduct, updateProduct, deleteProduc
 // multer file store configuration
 const storage = multer.diskStorage({
     destination: (req, file, cb)=>{
-        const path = `../src/storage/products/${req.body.product_name}/${file.fieldname}`
+        const path = `src/storage/products/${req.body.product_name}/${file.fieldname}`
         fs.mkdirsSync(path)
         cb(null, path)
     },

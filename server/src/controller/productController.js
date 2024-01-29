@@ -38,18 +38,15 @@ const storeProduct = asyncHandler(async(req, res)=>{
         }
         
         let styleId = []
-        req.body.style.forEach(async(element) => {
-            const s = await Styles.find({design_style: element})
+        for (let i = 0; i < req.body.style.length; i++) {
+            const s = await Styles.find({design_style: req.body.style[i]})
             if (!s) {
                 res.status(404)
-                throw new Error(`cannot find any styles with name: ${element}`)
+                throw new Error(`cannot find any styles with name: ${req.body.style[i]}`)
             }
-            styleId.push(s[0].id)
-            console.log(styleId)
-            req.body.style = styleId.concat(styleId)
-        })
-        
-        console.log(req.body.style)
+            styleId.push(s[0]._id)
+        }
+        req.body.style = styleId
 
         let imagePaths = []
         let mockupPaths = []
@@ -60,20 +57,7 @@ const storeProduct = asyncHandler(async(req, res)=>{
         req.body.file_psd = req.files.file_psd[0].path
         req.body.mockup = mockupPaths
 
-        const product = await Product.create({
-            ...req.body, 
-            photo_product: imagePaths, 
-            file_psd: req.files.file_psd[0].path, 
-            mockup: mockupPaths
-        })
-
-
-        // res.status(200).json({
-        //     ...req.body, 
-        //     photo_product: imagePaths, 
-        //     file_psd: req.files.file_psd[0].path, 
-        //     mockup: mockupPaths
-        // })
+        const product = await Product.create(req.body)
 
         res.status(200).json({payload: product})
     } catch (error) {

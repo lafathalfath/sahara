@@ -11,6 +11,7 @@ const cors = require('cors')
 
 const authenticationRoute = require('./routes/authenticationRoute')
 const usersRoute = require('./routes/usersRoute')
+const adminRoute = require('./routes/adminRoute')
 const cityRoute = require('./routes/cityRoute')
 const provinceRoute = require('./routes/provinceRoute')
 const nationRoute = require('./routes/nationRoute')
@@ -22,9 +23,6 @@ const favoritesRoute = require('./routes/favoritesRoute')
 const cartRoute = require('./routes/cartRoute')
 const transactionRoute = require('./routes/transactionRoute')
 const { authenticateToken } = require('./middleware/authenticateToken')
-// const multer = require('multer')
-// const fs = require('fs-extra')
-
 //end imports
 
 // cors handler
@@ -49,6 +47,7 @@ app.get('/', (req, res)=>{
 
 app.use('/auth', authenticationRoute)
 app.use('/api/users', authenticateToken, usersRoute)
+app.use('/api/admin', authenticateToken, adminRoute)
 app.use('/api/city', cityRoute)
 app.use('/api/province', provinceRoute)
 app.use('/api/nation', nationRoute)
@@ -61,31 +60,6 @@ app.use('/api/cart', authenticateToken, cartRoute)
 app.use('/api/transaction', authenticateToken, transactionRoute)
 
 app.use('/static', express.static('./'))
-
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb)=>{
-//         const path = `./src/storage/products/${req.body.product_name}/${file.fieldname}`
-//         fs.mkdirsSync(path)
-//         cb(null, path)
-//     },
-//     filename: (req, file, cb)=>{
-//         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`
-//         cb(null, `${uniqueSuffix}${file.originalname.substr(-4)}`)
-//     }
-// })
-
-// const upload = multer({ storage: storage })
-// const fUpload = upload.fields([
-//     {name: 'photo_product', maxCount: 100},
-//     {name: 'file_psd', maxCount: 1},
-//     {name: 'mockup', maxCount: 100}
-// ])
-// app.post('/api/upload', fUpload, (req, res, next)=>{
-//     let filePath = []
-//     req.files.photo_product.map(item=>filePath.push(item.path))
-//     res.json({message: 'sukses', file: filePath})
-// })
-
 //end routes
 
 //middleware

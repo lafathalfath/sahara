@@ -64,6 +64,7 @@ const updateUser = asyncHandler(async(req, res)=>{
             throw new Error(error.message)
         }
         const {id} = req.params
+        if (req.body.password) await bcrypt.hash(req.body.password, 9).then(pwd=>req.body.password = pwd).catch(err=>console.error(err.message))
         const user = await Users.findByIdAndUpdate(id, req.body)
         if(!user){
             res.status(404)
